@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Cal">
+
+<select id="getCalendar" parameterType="bit.your.prj.dto.CalendarDto" resultType="bit.your.prj.dto.CalendarDto">
+	SELECT SEQ, NICKNAME, SEQ_CLASS, TITLE, RDATE, CDATE 
+	FROM (SELECT ROW_NUMBER()OVER(PARTITION BY CDATE ORDER BY CDATE ASC) AS RNUM, 
+					SEQ, NICKNAME, SEQ_CLASS, TITLE, RDATE, CDATE 
+		  FROM CALENDAR 
+		  WHERE NICKNAME=#{nickname} AND SUBSTR(CDATE, 1, 6)=#{cdate} )
+	WHERE RNUM BETWEEN 1 AND 5
+</select> 
+
+<insert id="writeCalendar" parameterType="bit.your.prj.dto.CalendarDto">
+	INSERT INTO CALENDAR(SEQ, NICKNAME, SEQ_CLASS, TITLE, RDATE, CDATE )
+	VALUES(SEQ_CALENDAR.NEXTVAL, #{nickname}, #{seq_class}, #{title}, SYSDATE, #{cdate})
+</insert>
+
+<delete id="deleteCalendar" parameterType="bit.your.prj.dto.CalendarDto">
+	DELETE FROM CALENDAR 
+	WHERE SEQ_CLASS=#{seq_class} AND NICKNAME=#{nickname}
+</delete>
+
+</mapper>
+
+
+

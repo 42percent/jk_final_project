@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="Recipe">
+  	
+  	<select id="getRecipeList" parameterType="bit.your.prj.param.RecipeParam" resultType="bit.your.prj.dto.RecipeDto">
+  		
+  		SELECT SEQ, ID, RECIPETITLE, BESTIMG, NEWBESTIMG, RECINTRODUCE, RECCATEGORY, RECPERSON, RECTIME, RECLEVEL, INGREDIENT, READCOUNT,
+  				LIKED, RECCONTENT, RECCONTENT_B, RECCONTENT_C, RECCONTENT_D, RECCONTENT_E, RECCONTENT_F, RECIMG, NEWRECIMG, RECIMG_B,
+  				NEWRECIMG_B, RECIMG_C, NEWRECIMG_C, RECIMG_D, NEWRECIMG_D, RECIMG_E, NEWRECIMG_E, RECIMG_F, NEWRECIMG_F, DEL
+  		FROM
+  			(SELECT ROW_NUMBER()OVER(ORDER BY SEQ DESC) AS RNUM,
+  				SEQ, ID, RECIPETITLE, BESTIMG, NEWBESTIMG, RECINTRODUCE, RECCATEGORY, RECPERSON, RECTIME, RECLEVEL, INGREDIENT, READCOUNT,
+  				LIKED, RECCONTENT, RECCONTENT_B, RECCONTENT_C, RECCONTENT_D, RECCONTENT_E, RECCONTENT_F, RECIMG, NEWRECIMG, RECIMG_B,
+  				NEWRECIMG_B, RECIMG_C, NEWRECIMG_C, RECIMG_D, NEWRECIMG_D, RECIMG_E, NEWRECIMG_E, RECIMG_F, NEWRECIMG_F, DEL
+  			FROM RECIPE
+  			WHERE DEL=0
+	  			<if test="choice != null and choice != '' 
+				and search != null and search != ''">
+				<if test="choice == 'recipetitle'">
+					AND RECIPETITLE LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'reccategory'">
+					AND RECCATEGORY LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'writer'">
+					AND ID=#{search}
+				</if>	
+			</if>		
+			ORDER BY SEQ DESC)
+		WHERE RNUM BETWEEN ${start} AND ${end}	
+  	
+  	</select>
+  	
+  	<select id="getRecCount" parameterType="bit.your.prj.param.RecipeParam" resultType="Integer">
+  		SELECT NVL(COUNT(*), 0)
+  		FROM RECIPE
+  		WHERE DEL=0
+  		<if test="choice != null and choice != '' 
+			and search != null and search != ''">
+			<if test="choice == 'recipetitle'">
+				AND RECIPETITLE LIKE '%'||#{search}||'%'
+			</if>
+			<if test="choice == 'reccategory'">
+				AND RECCATEGORY LIKE '%'||#{search}||'%'
+			</if>
+			<if test="choice == 'writer'">
+				AND ID=#{search}
+			</if>	
+		</if>
+  	</select>
+	<!-- 
+	<select id="getRecipeList" resultType="bit.your.prj.dto.RecipeDto">
+	SELECT SEQ, ID, RECIPETITLE, BESTIMG, NEWBESTIMG, RECINTRODUCE, RECCATEGORY, RECPERSON, RECTIME, RECLEVEL, INGREDIENT, READCOUNT,
+  				LIKED, RECCONTENT, RECCONTENT_B, RECCONTENT_C, RECCONTENT_D, RECCONTENT_E, RECCONTENT_F, RECIMG, NEWRECIMG, RECIMG_B,
+  				NEWRECIMG_B, RECIMG_C, NEWRECIMG_C, RECIMG_D, NEWRECIMG_D, RECIMG_E, NEWRECIMG_E, RECIMG_F, NEWRECIMG_F
+	FROM RECIPE
+	ORDER BY SEQ DESC
+	</select>
+	 -->
+	<insert id="uploadRecipe" parameterType="bit.your.prj.dto.RecipeDto">
+  	INSERT INTO RECIPE(SEQ, ID, RECIPETITLE, BESTIMG, NEWBESTIMG, RECINTRODUCE, RECCATEGORY, RECPERSON, RECTIME, RECLEVEL, INGREDIENT, READCOUNT,
+  				LIKED, RECCONTENT, RECCONTENT_B, RECCONTENT_C, RECCONTENT_D, RECCONTENT_E, RECCONTENT_F, RECIMG, NEWRECIMG, RECIMG_B,
+  				NEWRECIMG_B, RECIMG_C, NEWRECIMG_C, RECIMG_D, NEWRECIMG_D, RECIMG_E, NEWRECIMG_E, RECIMG_F, NEWRECIMG_F, DEL)
+	VALUES(SEQ_RECIPE.NEXTVAL, #{id}, #{recipetitle}, #{bestimg}, #{newbestimg}, #{recintroduce}, #{reccategory}, #{recperson},
+				 #{rectime}, #{reclevel}, #{ingredient}, 0, 0, #{reccontent}, #{reccontent_b}, #{reccontent_c}, #{reccontent_d}, #{reccontent_e},
+				 #{reccontent_f}, #{recimg}, #{newrecimg}, #{recimg_b}, #{newrecimg_b}, #{recimg_c}, #{newrecimg_c}, #{recimg_d},
+				  #{newrecimg_d}, #{recimg_e}, #{newrecimg_e}, #{recimg_f}, #{newrecimg_f}, 0)
+  </insert>
+  
+  <insert id="uploadre" parameterType="bit.your.prj.dto.RecipeDto">
+  	INSERT INTO RECIPE(SEQ, ID, RECIPETITLE, BESTIMG, NEWBESTIMG, RECINTRODUCE, RECCATEGORY, RECPERSON, RECTIME, RECLEVEL, INGREDIENT, READCOUNT,
+  				LIKED, RECCONTENT, DEL)
+	VALUES(SEQ_RECIPE.NEXTVAL, #{id}, #{recipetitle}, #{bestimg}, #{newbestimg}, #{recintroduce}, #{reccategory}, #{recperson},
+				 #{rectime}, #{reclevel}, #{ingredient}, 0, 0, #{reccontent}, 0)
+  </insert>
+	
+	<select id="getRecipe" parameterType="java.lang.Integer"
+	resultType="bit.your.prj.dto.RecipeDto">
+	SELECT SEQ, ID, RECIPETITLE, BESTIMG, NEWBESTIMG, RECINTRODUCE, RECCATEGORY, RECPERSON, RECTIME, RECLEVEL, INGREDIENT, READCOUNT,
+  				LIKED, RECCONTENT, RECCONTENT_B, RECCONTENT_C, RECCONTENT_D, RECCONTENT_E, RECCONTENT_F, RECIMG, NEWRECIMG, RECIMG_B,
+  				NEWRECIMG_B, RECIMG_C, NEWRECIMG_C, RECIMG_D, NEWRECIMG_D, RECIMG_E, NEWRECIMG_E, RECIMG_F, NEWRECIMG_F, DEL
+	FROM RECIPE
+	WHERE SEQ=#{seq}
+</select>
+
+<update id="readCount" parameterType="java.lang.Integer">
+	UPDATE RECIPE
+	SET READCOUNT=READCOUNT+1
+	WHERE SEQ=#{seq}
+</update>
+
+<update id="updaterecipe" parameterType="bit.your.prj.dto.RecipeDto">
+	UPDATE RECIPE
+	SET RECIPETITLE=#{recipetitle}, BESTIMG=#{bestimg}, NEWBESTIMG=#{newbestimg}, RECINTRODUCE=#{recintroduce},RECCATEGORY=#{reccategory},
+					 RECPERSON=#{recperson}, RECTIME=#{rectime}, RECLEVEL=#{reclevel}, INGREDIENT=#{ingredient}, RECCONTENT=#{reccontent}
+	WHERE SEQ=#{seq}
+</update>
+
+<!-- <delete id="recipedelete" parameterType="java.lang.Integer">
+	DELETE FROM RECIPE
+	WHERE SEQ=#{seq}
+
+
+</delete> -->
+
+<update id="deleterecipe" parameterType="java.lang.Integer">
+   UPDATE RECIPE
+   SET DEL = 1
+   WHERE SEQ=#{seq}
+</update>
+
+<select id="myrecipelist" parameterType="bit.your.prj.dto.RecipeDto" resultType="bit.your.prj.dto.RecipeDto">
+   SELECT SEQ, ID, RECIPETITLE, BESTIMG, NEWBESTIMG, RECINTRODUCE, RECCATEGORY, RECPERSON, RECTIME, RECLEVEL, INGREDIENT, READCOUNT,
+  				LIKED, RECCONTENT, DEL
+   FROM RECIPE
+   WHERE DEL = 0 AND ID=#{id}
+</select>
+
+<!-- 내 클래스 -->
+<select id="likerecipe" parameterType="string" resultType="map">
+     SELECT R.SEQ, L.SEQ_RECIPE, L.ID, R.RECIPETITLE, R.BESTIMG, R.NEWBESTIMG, R.RECCATEGORY, R.RECTIME, R.RECLEVEL, R.INGREDIENT, R.RECPERSON,
+     R.LIKED, R.DEL
+     FROM RECIPE R, LIKED L
+     WHERE R.SEQ = L.SEQ_RECIPE AND L.ID = #{id}
+</select>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

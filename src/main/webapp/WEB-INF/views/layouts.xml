@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+
+<definition name="home.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/homeview/homepage.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+
+<!-- 효제 타일즈 -->
+<definition name="login.tiles" template="/WEB-INF/views/login/login.jsp">
+</definition>
+
+<definition name="regi.tiles" template="/WEB-INF/views/login/regi.jsp">
+</definition>
+
+<definition name="findid.tiles" template="/WEB-INF/views/login/findid.jsp">
+</definition>
+
+<definition name="findpw.tiles" template="/WEB-INF/views/login/findpw.jsp">
+</definition>
+
+
+<definition name="info.tiles" template="/WEB-INF/views/mypage/info.jsp">
+</definition>
+
+<definition name="mypage_main.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/mypage/mypage_main.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+
+<definition name="info.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/mypage/info.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+<definition name="info_update.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/mypage/info_update.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+<definition name="pwd_update.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/mypage/pwd_update.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+<definition name="info_del.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/mypage/info_del.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+<definition name="mycc.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/mypage/mycc.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+<definition name="managing_cc.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/mypage/managing_cc.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+
+<definition name="myrecipe.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/mypage/myrecipe.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+<definition name="like_recipe.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/mypage/like_recipe.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+
+
+<!-- 남규 타일즈 -->
+<definition name="cslist.tiles" extends="home.tiles">
+	<put-attribute name="main" value="/WEB-INF/views/cs/cslist.jsp" />
+</definition>
+
+<definition name="cswrite.tiles" extends="home.tiles">
+	<put-attribute name="main" value="/WEB-INF/views/cs/cswrite.jsp" />
+</definition>
+
+<definition name="csdetail.tiles" extends="home.tiles">
+	<put-attribute name="main" value="/WEB-INF/views/cs/csdetail.jsp" />
+</definition>
+
+<definition name="csupdate.tiles" extends="home.tiles">
+	<put-attribute name="main" value="/WEB-INF/views/cs/csupdate.jsp" />
+</definition>
+
+<definition name="answer.tiles" extends="home.tiles">
+	<put-attribute name="main" value="/WEB-INF/views/cs/csreply.jsp"/>
+</definition>
+
+<definition name="allmemlist.tiles" extends="home.tiles">
+	<put-attribute name="main" value="/WEB-INF/views/admin/allmemlist.jsp"/>
+</definition>
+
+<definition name="sellchart.tiles" extends="home.tiles">
+	<put-attribute name="main" value="/WEB-INF/views/admin/sellchart.jsp"/>
+</definition>
+
+<definition name="allrecipelist.tiles" extends="home.tiles">
+	<put-attribute name="main" value="/WEB-INF/views/admin/allrecipelist.jsp"/>
+</definition>
+
+<definition name="allclasslist.tiles" extends="home.tiles">
+	<put-attribute name="main" value="/WEB-INF/views/admin/allclasslist.jsp"/>
+</definition>
+
+<definition name="allmarketlist.tiles" extends="home.tiles">
+	<put-attribute name="main" value="/WEB-INF/views/admin/allmarketlist.jsp"/>
+</definition>
+
+<!-- 남규끝  타일즈 -->
+
+<!-- 승준 타일즈 -->
+<definition name="recipelist.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/recipe/recipelist.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+<definition name="recipewrite.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/recipe/Recipewrite.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+<definition name="recipedetail.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/recipe/recipedetail.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+<definition name="recipeupdate.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/recipe/recipeupdate.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+<definition name="summernote.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/summernote/summernote.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+<definition name="redetail.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/recipe/redetail.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+<definition name="reupdate.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/recipe/reupdate.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+<!-- 준기 타일즈 -->
+
+<definition name="marketlist.tiles" template="/WEB-INF/views/market/marketlist.jsp"></definition>
+
+<definition name="newMarketList.tiles" template="/WEB-INF/views/market/newMarketList.jsp"></definition>
+
+<definition name="marketmain.tiles" template="/WEB-INF/views/market/marketmain.jsp"></definition>
+
+<definition name="marketdetail.tiles" template="/WEB-INF/views/market/marketdetail.jsp"></definition>
+
+<definition name="marketwrite.tiles" template="/WEB-INF/views/market/marketwrite.jsp"></definition>
+
+<definition name="getSearchList.tiles" template="/WEB-INF/views/market/getSearchList.jsp"></definition>
+
+<definition name="getCartList.tiles" template="/WEB-INF/views/market/cart.jsp"></definition>
+
+<definition name="order.tiles" template="/WEB-INF/views/mypage/order.jsp">
+</definition>
+
+<!-- 준희 타일즈 -->
+<definition name="cclist.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<put-attribute name="header" value="/WEB-INF/views/commons/header.jsp"/>
+	<put-attribute name="top_menu" value="/WEB-INF/views/commons/top_menu.jsp"/>
+	<put-attribute name="top_info" value="/WEB-INF/views/commons/top_info.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/cc/cclist.jsp"/>
+	<put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp"/>
+</definition>
+
+<definition name="ccwrite.tiles" extends="cclist.tiles">
+	<put-attribute name="main" value="/WEB-INF/views/cc/ccwrite.jsp"/>
+</definition>
+
+<definition name="ccdetail.tiles" extends="cclist.tiles">
+	<put-attribute name="main" value="/WEB-INF/views/cc/ccdetail.jsp"/>
+</definition>
+
+<definition name="ccupdate.tiles" extends="cclist.tiles">
+	<put-attribute name="main" value="/WEB-INF/views/cc/ccupdate.jsp"/>
+</definition>
+
+<definition name="calist.tiles" extends="cclist.tiles">
+	<put-attribute name="main" value="/WEB-INF/views/cc/calist.jsp"/>
+</definition>
+
+
+</tiles-definitions>
+
+
+
+
+
+
+
+    

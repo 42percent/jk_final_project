@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Ad">
+	<!-- 멤버리스트 -->
+	<select id="allmemlist" parameterType="bit.your.prj.param.Param"  resultType="bit.your.prj.dto.MemberDto">
+		SELECT SEQ, ID, PWD, NAME, NICKNAME, BIRTH, GENDER, PHONE, EMAIL, ADDRESS1, AUTH, JOINDATE
+		FROM 
+			(SELECT ROW_NUMBER()OVER(ORDER BY SEQ DESC) AS RNUM,
+		       SEQ, ID, PWD, NAME, NICKNAME, BIRTH, GENDER, PHONE, EMAIL, ADDRESS1, AUTH, JOINDATE
+		FROM MEMBER
+		WHERE 1=1
+		<if test="choice != null and choice != '' 
+				and search != null and search != ''">
+				<if test="choice == 'name'">
+					AND NAME LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'nickname'">
+					AND NICKNAME LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'id'">
+					AND ID=#{search}
+				</if>	
+			</if>	
+			ORDER BY SEQ DESC)
+		WHERE RNUM BETWEEN ${start} AND ${end}		
+	</select>
+
+	<!-- 멤버총수 -->
+	<select id="getMemCount" parameterType="bit.your.prj.param.Param" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM MEMBER
+		WHERE 1=1 
+		<if test="choice != null and choice != '' 
+				and search != null and search != ''">
+				<if test="choice == 'name'">
+					AND NAME LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'nickname'">
+					AND NICKNAME LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'id'">
+					AND ID=#{search}
+				</if>	
+			</if>	
+	</select>
+	
+	<select id="excellist" resultType="bit.your.prj.dto.MemberDto">
+		SELECT SEQ, ID, NAME, NICKNAME, BIRTH, GENDER, EMAIL, ADDRESS1, AUTH, JOINDATE
+		FROM MEMBER
+	</select>
+
+	
+	
+	
+	
+	<!-- 차트 통계 -->
+	<select id="getMenCount" resultType="Integer">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE GENDER='남자'
+	</select>
+	
+	<select id="getWomenCount" resultType="Integer">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE GENDER='여자'
+	</select>
+	
+	<select id="getAllMemCount" resultType="Integer">
+		SELECT COUNT(*)
+		FROM MEMBER
+	</select>
+	
+	<select id="getAllRecipeCount" resultType="Integer">
+		SELECT COUNT(*)
+		FROM RECIPE
+	</select>
+	
+	<select id="getAllClassCount" resultType="Integer">
+		SELECT COUNT(*)
+		FROM COOKCLASS
+	</select>
+	
+	<select id="getAllMarketCount" resultType="Integer">
+		SELECT COUNT(*)
+		FROM MARKET
+	</select>
+	
+	<select id="jan" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+		SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE TO_CHAR(PDATE, 'YYYY-MM') = '2021-01'
+		GROUP BY TO_CHAR(PDATE, 'yyyy-mm')
+		ORDER BY TO_CHAR(PDATE, 'yyyy-mm') ASC
+	</select>
+	
+	<select id="feb" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+		SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE TO_CHAR(PDATE, 'YYYY-MM') = '2021-02'
+		GROUP BY TO_CHAR(PDATE, 'yyyy-mm')
+		ORDER BY TO_CHAR(PDATE, 'yyyy-mm') ASC
+	</select>
+	
+	<select id="mar" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+		SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE TO_CHAR(PDATE, 'YYYY-MM') = '2021-03'
+		GROUP BY TO_CHAR(PDATE, 'yyyy-mm')
+		ORDER BY TO_CHAR(PDATE, 'yyyy-mm') ASC
+	</select>
+	
+	<select id="apr" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+		SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE TO_CHAR(PDATE, 'YYYY-MM') = '2021-04'
+		GROUP BY TO_CHAR(PDATE, 'yyyy-mm')
+		ORDER BY TO_CHAR(PDATE, 'yyyy-mm') ASC
+	</select>
+	
+	<select id="may" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+		SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE TO_CHAR(PDATE, 'YYYY-MM') = '2021-05'
+		GROUP BY TO_CHAR(PDATE, 'yyyy-mm')
+		ORDER BY TO_CHAR(PDATE, 'yyyy-mm') ASC
+	</select>
+	
+	<select id="jun" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+		SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE TO_CHAR(PDATE, 'YYYY-MM') = '2021-06'
+		GROUP BY TO_CHAR(PDATE, 'yyyy-mm')
+		ORDER BY TO_CHAR(PDATE, 'yyyy-mm') ASC
+	</select>
+	
+	<select id="jul" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+		SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE TO_CHAR(PDATE, 'YYYY-MM') = '2021-07'
+		GROUP BY TO_CHAR(PDATE, 'yyyy-mm')
+		ORDER BY TO_CHAR(PDATE, 'yyyy-mm') ASC
+	</select>
+	
+	<select id="aug" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+		SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE TO_CHAR(PDATE, 'YYYY-MM') = '2021-08'
+		GROUP BY TO_CHAR(PDATE, 'yyyy-mm')
+		ORDER BY TO_CHAR(PDATE, 'yyyy-mm') ASC
+	</select>
+	
+	<select id="sep" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+		SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE TO_CHAR(PDATE, 'YYYY-MM') = '2021-09'
+		GROUP BY TO_CHAR(PDATE, 'yyyy-mm')
+		ORDER BY TO_CHAR(PDATE, 'yyyy-mm') ASC
+	</select>
+	
+	<select id="oct" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+		SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE TO_CHAR(PDATE, 'YYYY-MM') = '2021-10'
+		GROUP BY TO_CHAR(PDATE, 'yyyy-mm')
+		ORDER BY TO_CHAR(PDATE, 'yyyy-mm') ASC
+	</select>
+	
+	<select id="nov" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+		SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE TO_CHAR(PDATE, 'YYYY-MM') = '2021-11'
+		GROUP BY TO_CHAR(PDATE, 'yyyy-mm')
+		ORDER BY TO_CHAR(PDATE, 'yyyy-mm') ASC
+	</select>
+	
+	<select id="dec" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+		SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE TO_CHAR(PDATE, 'YYYY-MM') = '2021-12'
+		GROUP BY TO_CHAR(PDATE, 'yyyy-mm')
+		ORDER BY TO_CHAR(PDATE, 'yyyy-mm') ASC
+	</select>
+	
+	<select id="meat" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+	SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE CANUM = 1
+	</select>
+	
+	<select id="seefood" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+	SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE CANUM = 2
+	</select>
+	
+	<select id="vegetable" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+	SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE CANUM = 3
+	</select>
+	
+	<select id="fruit" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+	SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE CANUM = 4
+	</select>
+	
+	<select id="mealkit" parameterType="bit.your.prj.dto.IncomeDto" resultType="String">
+	SELECT SUM(PRICE)
+		FROM INCOME
+		WHERE CANUM = 5
+	</select>
+	
+	
+	<!-- END -->
+	
+<!-- 레시피 리스트 -->
+	<select id="allrecipelist" parameterType="bit.your.prj.param.Param"  resultType="bit.your.prj.dto.RecipeDto">
+		SELECT SEQ, ID, RECIPETITLE, BESTIMG, NEWBESTIMG, RECINTRODUCE, RECCATEGORY, RECPERSON, RECTIME, RECLEVEL, INGREDIENT, READCOUNT,
+  				LIKED, RECCONTENT, RECCONTENT_B, RECCONTENT_C, RECCONTENT_D, RECCONTENT_E, RECCONTENT_F, RECIMG, NEWRECIMG, RECIMG_B,
+  				NEWRECIMG_B, RECIMG_C, NEWRECIMG_C, RECIMG_D, NEWRECIMG_D, RECIMG_E, NEWRECIMG_E, RECIMG_F, NEWRECIMG_F, DEL
+  		FROM
+  			(SELECT ROW_NUMBER()OVER(ORDER BY SEQ DESC) AS RNUM,
+  				SEQ, ID, RECIPETITLE, BESTIMG, NEWBESTIMG, RECINTRODUCE, RECCATEGORY, RECPERSON, RECTIME, RECLEVEL, INGREDIENT, READCOUNT,
+  				LIKED, RECCONTENT, RECCONTENT_B, RECCONTENT_C, RECCONTENT_D, RECCONTENT_E, RECCONTENT_F, RECIMG, NEWRECIMG, RECIMG_B,
+  				NEWRECIMG_B, RECIMG_C, NEWRECIMG_C, RECIMG_D, NEWRECIMG_D, RECIMG_E, NEWRECIMG_E, RECIMG_F, NEWRECIMG_F, DEL
+  			FROM RECIPE
+  			WHERE 1=1
+	  			<if test="choice != null and choice != ''
+	  			and search != null and search != ''">
+				<if test="choice == 'recipetitle'">
+					AND RECIPETITLE LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'reccategory'">
+					AND RECCATEGORY LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'id'">
+					AND ID=#{search}
+				</if>	
+			</if>		
+			ORDER BY SEQ ASC)
+		WHERE RNUM BETWEEN ${start} AND ${end}	
+			
+	</select>
+<!-- 레시피총수 -->
+	<select id="getRecipeCount" parameterType="bit.your.prj.param.Param" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+  		FROM RECIPE
+  		WHERE 1=1
+  		<if test="choice != null and choice != ''
+				and search != null and search != ''">
+				<if test="choice == 'recipetitle'">
+					AND RECIPETITLE LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'reccategory'">
+					AND RECCATEGORY LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'id'">
+					AND ID=#{search}
+				</if>	
+			</if>		
+	</select>
+	
+<!-- 클래스리스트, 총수 -->
+<select id="allclasslist" parameterType="bit.your.prj.param.Param" resultType="bit.your.prj.dto.CCDto">
+	SELECT SEQ, NICKNAME, TITLE, LOCATION, KINDS, READCOUNT, CONTENT, MEMBERNUM, RDATE, EDATE,
+		   CDATE, FILENAME, NEWFILENAME, DEL	
+	FROM	   
+		(SELECT ROW_NUMBER()OVER(ORDER BY SEQ DESC) AS RNUM,
+		   SEQ, NICKNAME, TITLE, LOCATION, KINDS, READCOUNT, CONTENT, MEMBERNUM, RDATE, EDATE,
+		   CDATE, FILENAME, NEWFILENAME, DEL	
+		FROM COOKCLASS   		
+		WHERE 1=1
+		<if test="choice != null and choice != '' and search != null and search != ''">
+			<if test="choice == 'title'">
+				AND TITLE LIKE '%'||#{search}||'%'
+			</if>
+			<if test="choice == 'kinds'">
+				AND KINDS LIKE '%'||#{search}||'%'
+			</if>
+			<if test="choice == 'nickname'">
+				AND NICKNAME=#{search}
+			</if>
+		</if>
+		ORDER BY SEQ DESC)
+	WHERE RNUM BETWEEN ${start} AND ${end}	
+</select>
+
+<select id="getClassCount" parameterType="bit.your.prj.param.Param" resultType="Integer">
+	SELECT NVL(COUNT(*), 0)
+	FROM COOKCLASS
+	WHERE 1=1
+	<if test="choice != null and choice != '' 
+		and search != null and search != ''">
+		<if test="choice == 'title'">
+			AND TITLE LIKE '%'||#{search}||'%'
+		</if>
+		<if test="choice == 'kinds'">
+			AND KINDS LIKE '%'||#{search}||'%'
+		</if>
+		<if test="choice == 'nickname'">
+			AND NICKNAME=#{search}
+		</if>
+	</if>
+</select>
+
+<!-- 판매리스트 -->
+ <select id="allmarketlist" parameterType="bit.your.prj.param.Param" resultType="bit.your.prj.dto.MarketDto">
+  	SELECT SEQ, CANUM, ITEMNUM, TITLE, SUBTITLE, PRICE, GRAM, COUNTRY, EXPIRATION, COUNT, CONTENT, MAINPT, NEWMAINPT,
+  		   RVCOUNT, RDATE
+  	FROM
+  		(SLELCT ROW_NUMBER()OVER(ORDER BY SEQ DESC) AS RNUM,
+  		SEQ, CANUM, ITEMNUM, TITLE, SUBTITLE, PRICE, GRAM, COUNTRY, EXPIRATION, COUNT, CONTENT, MAINPT, NEWMAINPT,
+  		   RVCOUNT, RDATE
+	FROM MARKET
+	WHERE 1=1
+	<if test="choice != null and choice != '' and search != null and search != ''">
+			<if test="choice == 'title'">
+				AND TITLE LIKE '%'||#{search}||'%'
+			</if>
+			<if test="choice == 'nickname'">
+				AND NICKNAME=#{search}
+			</if>
+		</if>
+  	ORDER BY SEQ ASC)
+  
+  </select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+</mapper>

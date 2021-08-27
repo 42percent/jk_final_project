@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CMC">
+
+<!-- 댓글 리스트 불러오기 -->
+<select id="getCMCList" parameterType="bit.your.prj.dto.CMCDto" resultType="bit.your.prj.dto.CMCDto">
+	SELECT SEQ, NICKNAME, SEQ_CLASS, CONTENT, RDATE, DEL, REF, STEP, DEPTH
+	FROM COMMENT_CLASS
+	WHERE SEQ_CLASS = ${seq_class} AND DEL = 0
+	ORDER BY RDATE
+</select>
+
+<!-- 페이징 리스트 -->
+<!-- <select id="getCMCPagingList" parameterType="bit.your.prj.dto.CParam" resultType="bit.your.prj.dto.CMCDto">
+	SELECT SEQ, NICKNAME, SEQ_CLASS, CONTENT, RDATE, DEL, REF, STEP, DEPTH
+	FROM (SELECT ROW_NUMBER()OVER(ORDER BY SEQ DESC) AS RNUM,
+		  SEQ, NICKNAME, SEQ_CLASS, CONTENT, RDATE, DEL, REF, STEP, DEPTH
+		  FROM COMMENT_CLASS   		
+		  WHERE DEL = 0 AND SEQ_CLASS = ${seq_class}
+		  ORDER BY SEQ DESC)
+	WHERE RNUM BETWEEN ${start} AND ${end}	
+</select> -->
+
+<!-- 댓글의 총수 -->
+<!-- <select id="getCMCCount" parameterType="java.Lang.Integer" resultType="java.Lang.Integer">
+	SELECT NVL(COUNT(*), 0)
+	FROM COMMENT_CLASS
+	WHERE DEL = 0 AND SEQ_CLASS = ${seq_class}
+</select> -->
+
+<!-- 댓글 작성 -->
+<insert id="writeCMC" parameterType="bit.your.prj.dto.CMCDto">
+  		INSERT INTO COMMENT_CLASS(SEQ, NICKNAME, SEQ_CLASS, CONTENT, RDATE, DEL, REF, STEP, DEPTH)
+  		VALUES(SEQ_COMMENT_CLASS.NEXTVAL, #{nickname}, #{seq_class}, #{content}, SYSDATE, 0, (SELECT NVL(MAX(REF)+1, 0) FROM COMMENT_CLASS), 0, 0 )
+</insert>
+
+<!-- 대댓글 작성 -->
+<insert id="writeReCMC" parameterType="bit.your.prj.dto.CMCDto">
+	INSERT INTO COMMENT_CLASS(SEQ, NICKNAME, SEQ_CLASS, CONTENT, RDATE, DEL, REF, STEP, DEPTH)
+  	VALUES(SEQ_COMMENT_CLASS.NEXTVAL, #{nickname}, #{seq_class}, #{content}, SYSDATE,
+								(SELECT REF FROM RECCOMMENTDB WHERE SEQ=#{seq}),
+								(SELECT STEP FROM RECCOMMENTDB WHERE SEQ=#{seq}) + 1,
+								(SELECT DEPTH FROM RECCOMMENTDB WHERE SEQ=#{seq}) + 1,
+								 0 )
+</insert>
+
+<!-- 댓글 수정 -->
+<update id="updateCMC" parameterType="bit.your.prj.dto.CMCDto">
+	UPDATE COMMENT_CLASS
+	SET CONTENT = #{content}
+	WHERE SEQ = #{seq}
+</update>
+
+<!-- 댓글 삭제 -->
+<delete id="deleteCMC" parameterType="int">
+	DELETE FROM COMMENT_CLASS
+	WHERE SEQ=#{seq}
+</delete>
+
+</mapper>

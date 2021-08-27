@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="RecipeLiked">
+  	
+	<select id="getlist"  parameterType="bit.your.prj.dto.LikeDto" resultType="bit.your.prj.dto.LikeDto">
+	  	SELECT SEQ, ID, SEQ_RECIPE
+	  	FROM LIKED
+		WHERE SEQ_RECIPE=#{seq_recipe}
+	</select>
+	
+	<delete id="heartx" parameterType="bit.your.prj.dto.LikeDto">
+		DELETE FROM LIKED
+		WHERE ID=#{id} AND SEQ_RECIPE=#{seq_recipe}
+	</delete>
+	
+	<insert id="heart" parameterType="bit.your.prj.dto.LikeDto">
+		INSERT INTO LIKED(SEQ, ID, SEQ_RECIPE)
+		VALUES(SEQ_LIKED.NEXTVAL, #{id}, #{seq_recipe})
+	</insert>
+  	
+  	<select id="getLikeCount" parameterType="Integer" resultType="Integer"> 
+  		SELECT NVL(COUNT(*), 0)
+  		FROM LIKED
+  		WHERE SEQ_RECIPE=#{seq_recipe}
+  	</select>
+  	
+	  	<!-- 좋아요 증가 -->
+	<update id="likeup" parameterType="java.lang.Integer">
+	   UPDATE RECIPE
+	   SET LIKED=LIKED+1
+	   WHERE SEQ=#{seq_recipe}
+	</update> 
+	
+	<!-- 좋아요 감소 -->
+	<update id="likedown" parameterType="java.lang.Integer">
+	   UPDATE RECIPE
+	   SET LIKED=LIKED-1
+	   WHERE SEQ=#{seq}
+	</update> 
+
+  
+  </mapper>
