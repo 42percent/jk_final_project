@@ -1,0 +1,112 @@
+@charset "UTF-8";
+
+/* CSS Document */
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+@import url(https://fonts.googleapis.com/css?family=Bree+Serif);
+
+body.navmenu {
+	background: white;
+	font-size:22px;
+	line-height: 32px;
+	color: black;
+	word-wrap:break-word !important;
+	}
+
+h1.navmenu {
+	font-size: 60px;
+	text-align: center;
+	color: #FFF;
+}	
+
+h3.navmenu {
+	font-size: 30px;
+	text-align: center;
+	color: #FFF;
+}
+
+h3.navmenu a {
+	color: #FFF;
+}
+
+a.navmenu {
+	color: #FFF;
+}
+
+h1.navmenu {
+	margin-top: 100px;
+	text-align:center;
+	font-size:60px;
+	font-family: 'Bree Serif', 'serif';
+	}
+
+#container {
+	margin: 0 auto;
+}
+
+p.navmenu {
+	text-align: center;
+}
+
+nav.navmenu {
+	margin: 50px 0;
+	background-color: #2BB673;
+}
+
+nav.navmenu ul {
+	padding: 0;
+  	margin: 0;
+	list-style: none;
+	position: relative;
+	}
+	
+nav.navmenu ul li {
+	display:inline-block;
+	background-color: #2BB673;
+	}
+
+nav.navmenu a {
+	display:block;
+	padding:0 10px;	
+	color:#FFF;
+	font-size:20px;
+	line-height: 60px;
+	text-decoration:none;
+}
+
+nav.navmenu a:hover { 
+	background-color: rgb(128, 255, 128); 
+}
+
+/* Hide Dropdowns by Default */
+nav.navmenu ul ul {
+	display: none;
+	position: absolute; 
+	top: 60px; /* the height of the main nav */
+}
+	
+/* Display Dropdowns on Hover */
+nav.navmenu ul li:hover > ul {
+	display:inherit;
+	z-index: 10000000000000000;
+}
+	
+/* Fisrt Tier Dropdown */
+nav.navmenu ul ul li {
+	width:148px;
+	float:none;
+	display:list-item;
+	position: relative;
+}
+
+/* Second, Third and more Tiers	*/
+nav.navmenu ul ul ul li {
+	position: relative;
+	top:-60px; 
+	left:148px;
+}
+
+	
+/* Change this in order to change the Dropdown symbol */
+li > a:after { content:  ' +'; }
+li > a:only-child:after { content: ''; }

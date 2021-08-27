@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="Member">
+  
+<select id="login" parameterType="bit.your.prj.dto.MemberDto"
+	resultType="bit.your.prj.dto.MemberDto">
+	SELECT SEQ, ID, PWD, NAME, NICKNAME, BIRTH, GENDER, PHONE, ADDRESS1, EMAIL, JOINDATE, AUTH
+	FROM MEMBER
+	WHERE ID=#{id} AND PWD=#{pwd} AND AUTH=0
+</select>
+
+<select id="getId" parameterType="java.lang.String" resultType="java.lang.Integer">
+	SELECT NVL(COUNT(*), 0)
+	FROM MEMBER
+	WHERE ID=#{ id , jdbcType=VARCHAR}
+</select>
+
+<insert id="addmember" parameterType="bit.your.prj.dto.MemberDto" >
+	INSERT INTO MEMBER(SEQ, ID, PWD, NAME, NICKNAME, BIRTH, GENDER, PHONE, ADDRESS1, EMAIL, JOINDATE, AUTH)
+	VALUES(SEQ_MEMBER.NEXTVAL, #{id}, #{pwd}, #{name}, #{nickname}, #{birth}, #{gender}, #{phone}, #{address1}, #{email}, SYSDATE, 0)
+</insert>
+  
+ <select id="getnickname" parameterType="java.lang.String" resultType="java.lang.Integer">
+	SELECT NVL(COUNT(*), 0)
+	FROM MEMBER
+	WHERE NICKNAME=#{ nickname }
+</select>
+
+<select id="findid"  parameterType="bit.your.prj.dto.MemberDto" resultType="bit.your.prj.dto.MemberDto">
+		SELECT SEQ, ID, PWD, NAME, NICKNAME, BIRTH, GENDER, PHONE, ADDRESS1, EMAIL, JOINDATE, AUTH
+		FROM MEMBER
+		WHERE NAME=#{name} AND PHONE=#{phone} AND EMAIL=#{email}
+</select>
+	
+
+<update id="updatepwd" parameterType="bit.your.prj.dto.MemberDto">
+	      UPDATE MEMBER SET PWD = #{pwd}
+	      WHERE ID=#{id}
+</update>
+
+
+<select id="readmember" parameterType="java.lang.String" resultType="bit.your.prj.dto.MemberDto">
+         SELECT SEQ, ID, PWD, NAME, NICKNAME, BIRTH, GENDER, PHONE, ADDRESS1, EMAIL, JOINDATE, AUTH
+         FROM MEMBER
+         WHERE ID = #{id}
+
+</select>
+
+<update id="updatemember">
+         UPDATE MEMBER SET NAME=#{name}, PWD=#{newpwd}, NICKNAME=#{nickname}, PHONE=#{phone}, EMAIL=#{email}, ADDRESS1=#{address1}
+         WHERE ID = #{id} 
+</update>
+
+<delete id="deletemember">
+        UPDATE MEMBER SET AUTH = 3
+        WHERE ID=#{id} AND PWD=#{pwd}
+</delete>
+
+
+<!-- 남규추가 -->
+	<select id="idCheck" resultType="boolean">
+		SELECT COUNT(*) 
+		FROM MEMBER 
+		WHERE ID = #{id}
+	</select>
+
+	<select id="nicknameCheck" resultType="boolean">
+		SELECT COUNT(*) 
+		FROM MEMBER
+		WHERE NICKNAME = #{nickname}
+	</select>
+
+	<select id="emailCheck" resultType="boolean">
+		SELECT COUNT(*)
+		FROM MEMBER 
+		WHERE EMAIL = #{email}
+	</select>
+	
+	<select id="getMember" parameterType="String" resultType="bit.your.prj.dto.MemberDto">
+         SELECT SEQ, ID, PWD, NAME, NICKNAME, BIRTH, GENDER, PHONE, ADDRESS1, EMAIL, JOINDATE, SNS_TYPE, AUTH
+         FROM MEMBER
+         WHERE ID = #{id}
+	</select>
+	
+	<insert id="addMember" parameterType="bit.your.prj.dto.MemberDto">
+	<choose>
+			<when test='sns_Type.equals("none")'>
+				INSERT INTO MEMBER(SEQ, ID, PWD, NAME, NICKNAME, BIRTH, GENDER, PHONE, ADDRESS1, EMAIL, JOINDATE, SNSTYPE, AUTH)
+				VALUES(SEQ_MEMBER.NEXTVAL, #{id}, #{pwd}, #{name}, #{nickname}, #{birth}, #{gender}, #{phone}, #{address1}, #{email}, SYSDATE, #{sns_Type},  0)
+			</when>
+			<otherwise>
+				INSERT INTO MEMBER (SEQ, ID, NAME, NICKNAME, BIRTH, GENDER, PHONE, ADDRESS1, EMAIL, JOINDATE, SNSTYPE, AUTH)
+				VALUES (SEQ_MEMBER.NEXTVAL, #{id}, #{name}, #{nickname}, #{birth}, #{gender}, #{phone}, #{address1}, #{email}, SYSDATE, #{sns_Type}, 0)
+			</otherwise>
+		</choose>
+	</insert>
+
+
+  </mapper>

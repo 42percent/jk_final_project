@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="Market">
+  
+  <select id="marketlist" parameterType="bit.your.prj.dto.MarketDto" resultType="bit.your.prj.dto.MarketDto">
+  	SELECT SEQ, CANUM, ITEMNUM, TITLE, SUBTITLE, PRICE, GRAM, COUNTRY, EXPIRATION, COUNT, CONTENT, MAINPT, NEWMAINPT,
+  		   RVCOUNT, RDATE
+  	FROM MARKET
+  	ORDER BY SEQ DESC
+  
+  </select>
+  
+  <select id="getMarket" parameterType="Integer" resultType="bit.your.prj.dto.MarketDto">
+  	SELECT SEQ, CANUM, ITEMNUM, TITLE, SUBTITLE, PRICE, GRAM, COUNTRY, EXPIRATION, COUNT, CONTENT, MAINPT, NEWMAINPT,
+  		   RVCOUNT, RDATE
+  	FROM MARKET
+  	WHERE SEQ=#{seq}
+  </select> 
+  
+  <select id="getCalist" parameterType="Integer" resultType="bit.your.prj.dto.MarketDto">
+  	SELECT SEQ, CANUM, ITEMNUM, TITLE, SUBTITLE, PRICE, GRAM, COUNTRY, EXPIRATION, COUNT, CONTENT, MAINPT, NEWMAINPT,
+  		   RVCOUNT, RDATE
+  	FROM MARKET
+  	WHERE CANUM=#{canum}
+  	ORDER BY SEQ DESC
+  </select>
+  
+  <select id="newMarketList" parameterType="bit.your.prj.dto.MarketDto" resultType="bit.your.prj.dto.MarketDto">
+  	SELECT SEQ, CANUM, ITEMNUM, TITLE, SUBTITLE, PRICE, GRAM, COUNTRY, EXPIRATION, COUNT, CONTENT, MAINPT, NEWMAINPT,
+  		   RVCOUNT, RDATE
+  	FROM MARKET
+  	ORDER BY RDATE DESC
+  </select> 
+  
+  <insert id="uploadMarket">
+  	INSERT INTO MARKET(SEQ, CANUM,SUBCA, ITEMNUM, TITLE, SUBTITLE, PRICE, GRAM, COUNTRY, EXPIRATION, COUNT, CONTENT, MAINPT, NEWMAINPT,
+  		   RVCOUNT, RDATE)
+  	VALUES (SEQ_MARKET.NEXTVAL, #{canum}, #{subca}, ITEMNUM_MARKET.NEXTVAL, #{title}, #{subtitle}, #{price}, #{gram}, #{country}, 
+  			#{expiration}, 1, #{content}, #{mainpt}, #{newmainpt}, 0, SYSDATE) 	   
+  </insert>
+  
+  <select id="getItem" parameterType="Integer" resultType="bit.your.prj.dto.MarketDto">
+  	SELECT CANUM, ITEMNUM, NEWMAINPT, TITLE, COUNT, PRICE
+  	FROM MARKET
+  	WHERE ITEMNUM=#{itemnum}
+  </select>
+  
+  <insert id="addCart" parameterType="bit.your.prj.dto.MarketDto">
+  	INSERT INTO CART(SEQ, ID, CHECKNUM, CANUM, ITEMNUM, MAINPT, TITLE, COUNT, PRICE, ADDRESS)
+  	VALUES (SEQ_CART.NEXTVAL, #{id}, 1, #{canum}, #{itemnum}, #{mainpt}, #{title}, #{count}, #{price}, #{address})
+  </insert>
+  
+  <select id="getCartCount" parameterType="String" resultType="Integer">
+  	SELECT NVL(COUNT(*), 0)
+  	FROM CART
+  	WHERE ID=#{id} AND CHECKNUM=1
+  </select>
+  
+  <select id="getCartList" parameterType="String" resultType="bit.your.prj.dto.CartDto">
+  	SELECT SEQ, ID, CHECKNUM, CANUM, ITEMNUM, MAINPT, TITLE, COUNT, PRICE, ADDRESS
+  	FROM CART
+  	WHERE ID=#{id} AND CHECKNUM=1
+  	ORDER BY SEQ ASC
+  </select>
+  
+  
+  <select id="getSearchList" parameterType="bit.your.prj.dto.MarketParam" resultType="bit.your.prj.dto.MarketDto">
+  	SELECT SEQ, CANUM, SUBCA, ITEMNUM, TITLE, SUBTITLE, PRICE, GRAM, COUNTRY, EXPIRATION, COUNT, CONTENT, MAINPT, NEWMAINPT,
+  		   RVCOUNT, RDATE
+  	FROM MARKET
+  	WHERE 1=1
+  	<if test="search != null and search != ''">
+  		AND SUBCA LIKE '%'||#{search}||'%'
+  		OR TITLE LIKE '%'||#{search}||'%'
+  		OR SUBTITLE LIKE '%'||#{search}||'%'
+  	</if>	   
+  
+  </select>
+  
+  <delete id="delCart" parameterType="Integer">
+  	DELETE
+  	FROM CART
+  	WHERE SEQ=#{seq}
+  </delete>
+  
+  <update id="itemCountUp" parameterType="Integer">
+  	UPDATE CART
+  	SET COUNT= COUNT+1
+  	WHERE SEQ=#{seq}
+  </update>
+  
+  <update id="itemCountDown" parameterType="Integer">
+  	UPDATE CART
+  	SET COUNT= COUNT-1
+  	WHERE SEQ=#{seq}
+  </update> 
+  
+  <delete id="delAllItem" parameterType="String">
+  	DELETE
+  	FROM CART
+  	WHERE ID=#{id}
+  </delete>
+
+  
+   <select id="getCartItem" parameterType="Integer" resultType="bit.your.prj.dto.CartDto">
+  	SELECT TITLE, MAINPT, PRICE, CANUM, COUNT
+  	FROM CART
+  	WHERE SEQ=#{seq} 
+  </select>
+  
+  <insert id="insertIncome" parameterType="bit.your.prj.dto.IncomeDto">
+  	INSERT INTO INCOME (SEQ, ORDERNUM, TITLE, MAINPT, PRICE, COUNT, CANUM, PDATE, ID)
+  	VALUES (SEQ_INCOME.NEXTVAL, #{ordernum}, #{title}, #{mainpt}, #{price}, #{count}, #{canum}, SYSDATE, #{id})
+  </insert>
+  
+  <select id="getIncome" parameterType="String" resultType="bit.your.prj.dto.IncomeDto">
+  	SELECT SEQ, ORDERNUM, TITLE, PRICE, COUNT, CANUM, PDATE, ID, MAINPT
+  	FROM INCOME
+  	WHERE ID=#{id} 
+  	ORDER BY SEQ ASC
+  </select>
+
+  </mapper>

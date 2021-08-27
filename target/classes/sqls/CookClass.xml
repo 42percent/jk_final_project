@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper  namespace="CC">
+
+<!-- <select id="cclist" parameterType="bit.your.prj.dto.CCDto" resultType="bit.your.prj.dto.CCDto">
+	SELECT SEQ, NICKNAME, TITLE, LOCATION, KINDS, READCOUNT, CONTENT, MEMBERNUM, RDATE, EDATE,
+		   CDATE, FILENAME, NEWFILENAME	
+	FROM COOKCLASS
+	ORDER BY RDATE ASC
+</select> -->
+
+<!-- 게시판 리스트 -->
+<select id="getCClist" parameterType="bit.your.prj.param.ClassParam" resultType="bit.your.prj.dto.CCDto">
+	SELECT SEQ, NICKNAME, TITLE, LOCATION, KINDS, READCOUNT, MEMBERCOUNT, CONTENT, MEMBERNUM, RDATE, EDATE,
+		   CDATE1, CDATE2, CDAY, FILENAME, NEWFILENAME, DEL	
+	FROM	   
+		(SELECT ROW_NUMBER()OVER(ORDER BY SEQ DESC) AS RNUM,
+		   SEQ, NICKNAME, TITLE, LOCATION, KINDS, READCOUNT, MEMBERCOUNT, CONTENT, MEMBERNUM, RDATE, EDATE,
+		   CDATE1, CDATE2, CDAY, FILENAME, NEWFILENAME, DEL	
+		FROM COOKCLASS   		
+		WHERE DEL = 0
+		<if test="category != null and category != ''">
+			AND KINDS = #{category}
+		 <if test="check == 'true'">
+			AND (MEMBERCOUNT &gt; MEMBERNUM OR EDATE &gt; SYSDATE)
+			<if test="choice != null and choice != '' and search != null and search != ''"> 
+				<if test="choice == 'title'">
+					AND TITLE LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'content'">
+					AND CONTENT LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'nickname'">
+					AND NICKNAME=#{search}
+				</if>
+			</if>
+		</if> 
+		<if test="check != 'true' or check == '' or check == 'null'">
+			<if test="choice != null and choice != '' and search != null and search != ''">
+				<if test="choice == 'title'">
+					AND TITLE LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'content'">
+					AND CONTENT LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'nickname'">
+					AND NICKNAME=#{search}
+				</if>
+			</if>
+		</if>
+		</if>	
+		<if test="category == null or category == ''">
+		 <if test="check == 'true'">
+			AND (MEMBERCOUNT &gt; MEMBERNUM OR EDATE &gt; SYSDATE)
+			<if test="choice != null and choice != '' and search != null and search != ''"> 
+				<if test="choice == 'title'">
+					AND TITLE LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'content'">
+					AND CONTENT LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'nickname'">
+					AND NICKNAME=#{search}
+				</if>
+			</if>
+		</if> 
+		<if test="check != 'true' or check == '' or check == 'null'">
+			<if test="choice != null and choice != '' and search != null and search != ''">
+				<if test="choice == 'title'">
+					AND TITLE LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'content'">
+					AND CONTENT LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'nickname'">
+					AND NICKNAME=#{search}
+				</if>
+			</if>
+		</if>
+		</if>			
+		
+	ORDER BY SEQ DESC)
+	WHERE RNUM BETWEEN ${start} AND ${end}	
+</select>
+
+<!-- 글의 총수 -->
+<select id="getCCCount" parameterType="bit.your.prj.param.ClassParam" resultType="Integer">
+	SELECT NVL(COUNT(*), 0)
+	FROM COOKCLASS
+	WHERE DEL = 0 
+	 <if test="category != null and category != ''">
+			AND KINDS = #{category}
+		 <if test="check == 'true'">
+			AND (MEMBERCOUNT &gt; MEMBERNUM OR EDATE &gt; SYSDATE)
+			<if test="choice != null and choice != '' and search != null and search != ''"> 
+				<if test="choice == 'title'">
+					AND TITLE LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'content'">
+					AND CONTENT LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'nickname'">
+					AND NICKNAME=#{search}
+				</if>
+			</if>
+		</if> 
+		<if test="check != 'true' or check == '' or check == 'null'">
+			<if test="choice != null and choice != '' and search != null and search != ''">
+				<if test="choice == 'title'">
+					AND TITLE LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'content'">
+					AND CONTENT LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'nickname'">
+					AND NICKNAME=#{search}
+				</if>
+			</if>
+		</if>
+		</if>	
+		<if test="category == null or category == ''">
+		 <if test="check == 'true'">
+			AND (MEMBERCOUNT &gt; MEMBERNUM OR EDATE &gt; SYSDATE)
+			<if test="choice != null and choice != '' and search != null and search != ''"> 
+				<if test="choice == 'title'">
+					AND TITLE LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'content'">
+					AND CONTENT LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'nickname'">
+					AND NICKNAME=#{search}
+				</if>
+			</if>
+		</if> 
+		<if test="check != 'true' or check == '' or check == 'null'">
+			<if test="choice != null and choice != '' and search != null and search != ''">
+				<if test="choice == 'title'">
+					AND TITLE LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'content'">
+					AND CONTENT LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'nickname'">
+					AND NICKNAME=#{search}
+				</if>
+			</if>
+		</if>
+		</if>				
+</select>
+
+<!-- 글작성 -->
+<insert id="uploadCC" parameterType="bit.your.prj.dto.CCDto">
+	INSERT INTO COOKCLASS(SEQ, NICKNAME, TITLE, LOCATION, KINDS, READCOUNT, MEMBERCOUNT, CONTENT, MEMBERNUM, RDATE, EDATE,
+		   CDATE1, CDATE2, CDAY, FILENAME, NEWFILENAME, DEL)
+	VALUES(SEQ_COOKCLASS.NEXTVAL, #{nickname}, #{title}, #{location}, #{kinds}, 0, 0,  
+		 #{content}, #{membernum}, SYSDATE, #{edate}, #{cdate1}, #{cdate2}, #{cday}, #{filename}, #{newfilename}, 0)
+</insert> 
+
+<!-- 글상세보기 -->
+<select id="getCC" resultType="bit.your.prj.dto.CCDto">
+	SELECT SEQ, NICKNAME, TITLE, LOCATION, KINDS, READCOUNT, MEMBERCOUNT, CONTENT, MEMBERNUM, RDATE, EDATE,
+		   CDATE1, CDATE2, CDAY, FILENAME, NEWFILENAME, DEL	
+	FROM COOKCLASS
+	WHERE SEQ=#{seq}
+</select>
+
+<!-- 조회수 증가 -->
+<update id="readCount" parameterType="java.lang.Integer">
+	UPDATE COOKCLASS
+	SET READCOUNT=READCOUNT+1
+	WHERE SEQ=#{seq}
+</update> 
+
+<!-- 글삭제 -->
+<update id="deleteCC" parameterType="java.lang.Integer">
+	UPDATE COOKCLASS
+	SET DEL = 1
+	WHERE SEQ=#{seq}
+</update>
+
+<!-- <delete id="deleteCC" parameterType="bit.your.prj.dto.CCDto">
+	DELETE FROM COOKCLASS
+	WHERE SEQ=#{seq}
+</delete>
+ -->
+ 
+<!-- 글수정 -->
+<update id="updateCC" parameterType="bit.your.prj.dto.CCDto">
+	UPDATE COOKCLASS
+	SET TITLE=#{title}, KINDS=#{kinds}, LOCATION=#{location}, CONTENT=#{content}, MEMBERNUM=#{membernum},  
+		RDATE=SYSDATE, EDATE=#{edate}, CDATE1=#{cdate1}, CDATE2=#{cdate2}, CDAY=#{cday}, FILENAME=#{filename}, NEWFILENAME=#{newfilename}
+	WHERE SEQ=#{seq}
+</update>
+
+<!-- 클래스참가 -->
+<insert id="enterCM" parameterType="bit.your.prj.dto.CMDto">
+	INSERT INTO CLASSMEMBER(SEQ, SEQ_CLASS, NICKNAME, GENDER)
+	VALUES(SEQ_CLASSMEMBER.NEXTVAL, #{seq_class}, #{nickname}, #{gender})
+</insert>
+
+<!-- 참여인원 숫자 파악 --> 
+<select id="getCMCount" parameterType="bit.your.prj.dto.CMDto" resultType="Integer">
+	SELECT NVL(COUNT(*), 0)
+	FROM CLASSMEMBER
+	WHERE SEQ_CLASS = #{seq_class}
+</select>
+
+<!-- seq로 찾기 참여인원 -->
+<select id="getCM" parameterType="java.lang.Integer" resultType="bit.your.prj.dto.CMDto">
+	SELECT SEQ_CLASS, NICKNAME, GENDER
+	FROM CLASSMEMBER
+	WHERE SEQ_CLASS = #{seq_class}
+	ORDER BY SEQ
+</select>
+
+<!-- id로 찾기 참여인원 -->
+<select id="getNickNameCM" parameterType="String" resultType="map">
+	SELECT C.TITLE, C.CONTENT
+	FROM COOKCLASS C, CLASSMEMBER M
+	WHERE C.SEQ = M.SEQ_CLASS
+	AND M.NICKNAME = #{nickname}
+</select>
+
+<!-- 클래스탈퇴 -->
+<delete id="resignCM" parameterType="bit.your.prj.dto.CMDto">
+	DELETE FROM CLASSMEMBER
+	WHERE SEQ_CLASS=#{seq_class} AND NICKNAME=#{nickname}
+</delete>
+
+<!-- 회원수 증가 -->
+<update id="memberCount" parameterType="java.lang.Integer">
+	UPDATE COOKCLASS
+	SET MEMBERCOUNT=MEMBERCOUNT+1
+	WHERE SEQ=#{seq}
+</update> 
+
+<!-- 회원수 감소 -->
+<update id="memberCountDown" parameterType="java.lang.Integer">
+	UPDATE COOKCLASS
+	SET MEMBERCOUNT=MEMBERCOUNT-1
+	WHERE SEQ=#{seq}
+</update> 
+
+<!-- 효제추가 -->
+<!-- 운영중인 클래스 -->
+<select id="mycclist" parameterType="bit.your.prj.dto.CCDto" resultType="bit.your.prj.dto.CCDto">
+	SELECT SEQ, NICKNAME, TITLE, LOCATION, KINDS, READCOUNT, CONTENT, MEMBERNUM, RDATE, EDATE,
+		   CDATE, FILENAME, NEWFILENAME	
+	FROM COOKCLASS
+	WHERE DEL = 0 AND NICKNAME = #{nickname}
+	ORDER BY RDATE ASC
+</select>
+
+
+<!-- 내 클래스 -->
+<select id="myclass" parameterType="string" resultType="map">
+     SELECT C.SEQ, CM.SEQ_CLASS, C.NICKNAME, C.TITLE, C.LOCATION, C.KINDS, C.FILENAME, C.NEWFILENAME
+     FROM COOKCLASS C, CLASSMEMBER CM
+     WHERE C.SEQ = CM.SEQ_CLASS AND CM.NICKNAME = #{nickname}
+</select>
+
+
+
+</mapper>

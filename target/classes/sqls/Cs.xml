@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Cs">
+
+<!-- List 뿌리기 -->
+	<select id="cslist" parameterType="bit.your.prj.param.Param" resultType="bit.your.prj.dto.CsDto">
+		SELECT SEQ, ID, REF, STEP, DEPTH, READCOUNT, TITLE, CONTENT, RDATE, TYPE, DEL
+		FROM (SELECT ROW_NUMBER()OVER(ORDER BY REF DESC, STEP ASC) AS RNUM,SEQ, ID, REF, STEP, DEPTH, READCOUNT, TITLE, CONTENT, RDATE, TYPE, DEL
+		FROM CS_BBS
+		WHERE 1=1
+			<if test="choice != null and choice != '' 
+				and search != null and search != ''">
+				<if test="choice == 'title'">
+					AND TITLE LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'content'">
+					AND CONTENT LIKE '%'||#{search}||'%'
+				</if>
+				<if test="choice == 'writer'">
+					AND ID=#{search}
+				</if>	
+			</if>		
+			ORDER BY REF DESC, STEP ASC)
+		WHERE RNUM BETWEEN ${start} AND ${end}		
+	</select>
+	
+<!-- 글의 총수 -->
+	<select id="getCsCount" parameterType="bit.your.prj.param.Param" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM CS_BBS
+		WHERE 1=1 
+		<if test="choice != null and choice != '' 
+			and search != null and search != ''">
+			<if test="choice == 'title'">
+				AND TITLE LIKE '%'||#{search}||'%'
+			</if>
+			<if test="choice == 'content'">
+				AND CONTENT LIKE '%'||#{search}||'%'
+			</if>
+			<if test="choice == 'writer'">
+				AND ID=#{search}
+			</if>	
+		</if>
+	</select>
+	
+<!-- 글쓰기 쿼리문 -->	
+	<insert id="writeCs" parameterType="bit.your.prj.dto.CsDto">
+		INSERT INTO CS_BBS(SEQ, ID, REF, STEP, DEPTH, TITLE, CONTENT, RDATE, TYPE, DEL, READCOUNT)
+		VALUES(SEQ_CS.NEXTVAL, #{id}, (SELECT NVL(MAX(REF)+1, 0) FROM CS_BBS), 0, 0, #{title}, #{content}, SYSDATE, #{type}, 0, 0)
+	</insert>
+	
+<!-- Detail view -->	
+	<select id="getCsBbs" parameterType="java.lang.Integer" resultType="bit.your.prj.dto.CsDto">
+		SELECT SEQ, ID, REF, STEP, DEPTH, TITLE, CONTENT, RDATE, TYPE, DEL, READCOUNT
+		FROM CS_BBS
+		WHERE SEQ=#{seq}
+	</select>
+
+<!-- 조회수 증가 -->
+	<update id="readCount" parameterType="java.lang.Integer">
+		UPDATE CS_BBS
+		SET READCOUNT=READCOUNT+1
+		WHERE SEQ=#{seq}
+	</update>
+
+<!-- 수정 및 삭제 -->
+	<update id="deleteBbs" parameterType="java.lang.Integer">
+		UPDATE CS_BBS
+		SET DEL=1
+		WHERE SEQ=#{seq}
+	</update>
+	<update id="updateBbs" parameterType="bit.your.prj.dto.CsDto">
+			UPDATE CS_BBS SET
+			TITLE=#{title}, CONTENT=#{content}, RDATE=SYSDATE
+			WHERE SEQ=#{seq}
+	</update>
+
+<!-- 답글 작성 -->
+	<update id="replyCsBbsUpdate" parameterType="bit.your.prj.dto.CsDto">
+		UPDATE CS_BBS 
+		SET STEP = STEP + 1
+		WHERE REF = (SELECT REF FROM CS_BBS WHERE SEQ=#{seq} )
+		AND STEP > (SELECT STEP FROM CS_BBS WHERE SEQ=#{seq} )
+	</update>
+	<insert id="replyCsBbsInsert" parameterType="bit.your.prj.dto.CsDto">
+		INSERT INTO CS_BBS(SEQ, ID, REF, STEP, DEPTH, TITLE, CONTENT, RDATE, DEL, READCOUNT )
+		VALUES(SEQ_CS.NEXTVAL, #{id},
+		(SELECT REF FROM CS_BBS WHERE SEQ=#{seq}),
+		(SELECT STEP FROM CS_BBS WHERE SEQ=#{seq}) + 1,
+		(SELECT DEPTH FROM CS_BBS WHERE SEQ=#{seq}) + 1,
+		#{title}, #{content}, SYSDATE, 0, 0)
+	</insert>
+	
+	
+	
+	
+	
+	
+
+</mapper>

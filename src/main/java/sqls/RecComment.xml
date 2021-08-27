@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="RecComment">
+  
+	<select id="reccommentlist" resultType="bit.your.prj.dto.RecCommentDto">
+	  	SELECT SEQ, BBSID, ID, RDATE, CONTENT, REF, STEP, DEPTH, DEL
+	  	FROM RECCOMMENTDB
+		WHERE BBSID=#{bbsid}
+		ORDER BY REF asc, RDATE asc
+	</select>
+	
+ 	<select id="reccomment" parameterType="bit.your.prj.param.RecCommentParam" resultType="bit.your.prj.param.RecCommentParam">
+	  	SELECT SEQ, BBSID, ID, RDATE, CONTENT, REF, STEP, DEPTH, DEL
+	  	FROM (SELECT ROW_NUMBER()OVER(ORDER BY REF ASC, RDATE ASC) AS RNUM,
+	  			SEQ, BBSID, ID, RDATE, CONTENT, REF, STEP, DEPTH, DEL
+	  		  FROM RECCOMMENTDB
+		WHERE BBSID=#{bbsid}
+		ORDER BY REF asc, RDATE asc)
+		WHERE RNUM BETWEEN ${start} AND ${end}
+	</select>
+	
+	<select id="reccommentcount" resultType="Integer" parameterType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM RECCOMMENTDB
+		WHERE BBSID =#{bbsid}
+	</select>
+	
+	<insert id="rereply" parameterType="bit.your.prj.dto.RecCommentDto">
+		INSERT INTO RECCOMMENTDB(SEQ, BBSID, ID, RDATE, CONTENT, REF, STEP, DEPTH, DEL )
+		VALUES(SEQ_RECCOMMENTDB.NEXTVAL, #{bbsid}, #{id}, SYSDATE, ' ', 
+								(SELECT REF FROM RECCOMMENTDB WHERE SEQ=#{seq}),
+								(SELECT STEP FROM RECCOMMENTDB WHERE SEQ=#{seq}) + 1,
+								(SELECT DEPTH FROM RECCOMMENTDB WHERE SEQ=#{seq}) + 1,
+								 0 )
+	</insert>
+	
+  	<insert id="reccommentadd" parameterType="bit.your.prj.dto.RecCommentDto">
+  		INSERT INTO RECCOMMENTDB(SEQ, BBSID, ID, RDATE, CONTENT, REF, STEP, DEPTH, DEL )
+  		VALUES(SEQ_RECCOMMENTDB.NEXTVAL, #{bbsid}, #{id}, SYSDATE, #{content}, (SELECT NVL(MAX(REF)+1, 0) FROM RECCOMMENTDB), 0, 0, 0 )
+  	</insert>
+  	
+  	<update id="updatereccomment" parameterType="bit.your.prj.dto.RecCommentDto">
+		UPDATE RECCOMMENTDB SET CONTENT = #{content}
+		WHERE seq=#{seq}
+	</update>
+  	
+  	<delete id="deletereccomment" parameterType="int">
+		DELETE FROM RECCOMMENTDB
+		WHERE SEQ=#{seq}
+	</delete>
+	
+	<update id="updatere" parameterType="bit.your.prj.dto.RecCommentDto">
+		UPDATE RECCOMMENTDB SET CONTENT = #{content}
+		WHERE seq=#{seq}
+	</update>
+
+  </mapper>
